@@ -1560,6 +1560,109 @@ if (text === "System Diagnostics") {
   return;
 }
 
+function activateCodeWiki() {
+
+  appState.page = "Code Wiki";
+  appState.subPage = "Explorer";
+  appState.view = "Summary";
+  renderHeader();
+
+  isWikiMode = true;
+  isConvertMode = false;
+
+  // Remove active from sidebar
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+
+  // Sidebar animation
+  sidebarTop.classList.add("sidebar-animate");
+
+  sidebarTop.innerHTML = `
+    <div class="logo">EquiValic</div>
+    <div class="sub-nav" id="backToDashboard">Dashboard</div>
+    <div class="sub-nav active">Code Wiki</div>
+    <div class="sub-nav">System Diagnostics</div>  <!-- ✅ FIXED -->
+    <div class="convert-cta" id="dashboardConvertBtn">
+      <span>Convert Code</span>
+    </div>
+  `;
+
+  setTimeout(() => {
+    sidebarTop.classList.remove("sidebar-animate");
+  }, 300);
+
+  // Fade panels
+  leftPanel.classList.add("fade-transition","fade-out");
+  displayPanel.classList.add("fade-transition","fade-out");
+
+  setTimeout(() => {
+
+    // ✅ TREE (AUTO-OPEN FIXED)
+    leftPanel.innerHTML = `
+      <div class="tree">
+
+        <div class="tree-item folder open">
+          <div class="tree-row">
+            <span class="arrow"></span>
+            <span class="folder-name">src</span>
+          </div>
+
+          <div class="tree-children">
+
+            <div class="tree-item folder open">
+              <div class="tree-row">
+                <span class="arrow"></span>
+                <span class="folder-name">controllers</span>
+              </div>
+
+              <div class="tree-children">
+                <div class="tree-item file">userController_withVeryLongFileNameExample.cbl</div>
+                <div class="tree-item file">paymentController.cbl</div>
+              </div>
+            </div>
+
+            <div class="tree-item folder open">
+              <div class="tree-row">
+                <span class="arrow"></span>
+                <span class="folder-name">services</span>
+              </div>
+
+              <div class="tree-children">
+                <div class="tree-item file">billingService.cbl</div>
+                <div class="tree-item file">authService.cbl</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    `;
+
+    // ✅ TABS (MATCH CLIENT UI)
+    displayPanel.innerHTML = `
+      <div class="dashboard-tabs">
+        <button class="tab active">Summary</button>
+        <button class="tab">SQL</button>
+        <button class="tab">Tree</button>
+        <button class="tab">Mind Map</button>
+        <button class="tab">Graph</button>
+        <button class="tab">Variables</button>
+        <button class="tab">JSON</button>
+      </div>
+
+      <div id="wikiContent" style="color:var(--text-muted);margin-top:20px;">
+        Select a COBOL program to see summary
+      </div>
+    `;
+
+    leftPanel.classList.remove("fade-out");
+    displayPanel.classList.remove("fade-out");
+
+    attachWikiEvents();
+
+  }, 200);
+}
+
 });
     </script>
   </body>
