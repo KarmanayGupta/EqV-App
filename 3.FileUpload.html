@@ -656,6 +656,7 @@
   opacity: 1;
   color: #ff6b6b;
 }
+
 /* ================= RESPONSIVE LAYOUT ADAPTATION ================= */
 
 @media (max-width: 1300px) {
@@ -684,6 +685,41 @@
     display: none;
   }
 }
+
+  .project-input-group {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 12px;
+  }
+  .project-input-group label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+  .project-input-group input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    color: var(--text-primary);
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  .project-input-group input:focus {
+    border-color: var(--accent-2);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .project-input-group input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
+  }
     </style>
   </head>
 
@@ -843,6 +879,11 @@
             <div id="uploadedName" class="uploaded-name"></div>
           </div>
           <button id="closeOverlay">&times;</button>
+        </div>
+
+        <div class="project-input-group">
+          <label for="projectName">Enter Your Project Name</label>
+          <input type="text" id="projectName" placeholder="e.g. Core Banking Migration V2" />
         </div>
 
         <div class="modal-metrics">
