@@ -631,9 +631,10 @@
   color: #fff;
 }
 
-.convert-stat .label {
-  font-size: 12px;
+.diag-stat .label {
+  font-size: 14px;
   color: var(--text-muted);
+  margin-top: 6px;
 }
 
 /* Cards */
@@ -704,8 +705,10 @@
 }
 
 .diag-stat .value {
-  font-size: 26px;
+  font-size: 42px;
   font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
 }
 
 .diag-grid {
@@ -788,10 +791,10 @@
     <div class="sidebar">
       <div>
         <div class="logo">EquiValic</div>
-        <div class="nav-item active">Code Wiki</div>
-        <div class="nav-item">Conversion Metric</div>
-        <div class="nav-item">Test Accuracy</div>
-        <div class="nav-item">Optimisation</div>
+        <div class="nav-item active">Analysis Engine</div>
+        <div class="nav-item">Conversion Engine</div>
+        <div class="nav-item">Test Engine</div>
+        <div class="nav-item">Optimisation Engine</div>
       </div>
       <div class="nav-item">Settings</div>
     </div>
@@ -830,7 +833,7 @@
 
 const appState = {
   product: "Product Suite",
-  section: "Code Wiki",
+  section: "Analysis Engine",
   page: "Dashboard",
   view: "Overview"
 };
@@ -991,7 +994,7 @@ Click graph to zoom
       </div>
 
         <div class="row">
-  <span style="grid-column: span 4; text-align:center;">
+  <span style="grid-column: span 4; text-align:left;">
     No calls to missing programs
   </span>
 </div>
@@ -1234,7 +1237,7 @@ isConvertMode = true;
 isWikiMode = false;
 
 setState({
-  section: "Code Wiki",
+  section: "Analysis",
   page: "Summary Overview",
   view: "Overview"
 });
@@ -1280,27 +1283,30 @@ setTimeout(() => {
   </div>
 
   <!-- STATS -->
-  <div class="convert-stats">
-    <div class="convert-stat">
-      <div class="value">2</div>
-      <div class="label">Total Programs</div>
-    </div>
-    <div class="convert-stat">
-      <div class="value">0</div>
-      <div class="label">SQL Statements</div>
-    </div>
-    <div class="convert-stat">
-      <div class="value">0</div>
-      <div class="label">Tables Accessed</div>
-    </div>
-    <div class="convert-stat">
-      <div class="value">0</div>
-      <div class="label">DB2 Programs</div>
-    </div>
+  <div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value">2</div>
+    <div class="stat-label">Total Programs</div>
   </div>
 
+  <div class="stat-card">
+    <div class="stat-value">0</div>
+    <div class="stat-label">SQL Statements</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Tables Accessed</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-value">0</div>
+    <div class="stat-label">DB2 Programs</div>
+  </div>
+</div>
+
   <!-- CARDS -->
-  <div class="convert-card">
+  <div class="chart-wrapper dark">
     <h4>Classification Breakdown</h4>
 
     <div class="convert-row">
@@ -1319,17 +1325,17 @@ setTimeout(() => {
     </div>
   </div>
 
-  <div class="convert-card">
+  <div class="chart-wrapper dark">
     <h4>SQL Analysis</h4>
     <div class="empty">No SQL data available</div>
   </div>
 
-  <div class="convert-card">
+  <div class="chart-wrapper dark">
     <h4>Table Usage</h4>
     <div class="empty">No table usage data available</div>
   </div>
 
-  <div class="convert-card">
+  <div class="chart-wrapper dark">
     <h4>Recommendations & Insights</h4>
     <div class="empty">No recommendations available</div>
   </div>
@@ -1351,7 +1357,7 @@ function activateDiagnosticsMode() {
   isConvertMode = false;
 
   setState({
-    section: "Code Wiki",
+    section: "Analysis Engine",
     page: "System Diagnostics",
     view: "Overview"
   });
@@ -1365,6 +1371,9 @@ function activateDiagnosticsMode() {
     <div class="sub-nav" id="backToDashboard">Dashboard</div>
     <div class="sub-nav">Code Wiki</div>
     <div class="sub-nav active">System Diagnostics</div>
+    <div class="convert-cta" id="dashboardConvertBtn">
+    <span>Convert Code</span>
+  </div>
   `;
 
   setTimeout(() => {
@@ -1386,6 +1395,7 @@ function activateDiagnosticsMode() {
     displayPanel.classList.remove("fade-out");
 
     attachDiagnosticsEvents();
+    attachConvertEvents();
 
   }, 200);
 }
@@ -1397,29 +1407,29 @@ function renderDiagnostics() {
 
     <!-- TOP STATS -->
     <div class="diag-stats">
-      <div class="diag-stat stat-card">
-        <div class="value">3</div>
-        <div class="label">Programs</div>
+      <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Programs</div>
       </div>
-      <div class="diag-stat stat-card">
-        <div class="value">3</div>
-        <div class="label">Dependencies</div>
+      <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Dependencies</div>
       </div>
-      <div class="diag-stat stat-card">
-        <div class="value">0</div>
-        <div class="label">Entry Points</div>
+      <div class="stat-card">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Entry Points</div>
       </div>
     </div>
 
     <!-- GRID -->
     <div class="diag-grid">
 
-      <div class="diag-card">
+      <div class="chart-wrapper dark">
         <h4>Entry Points</h4>
         <div class="empty">0 total: 0 JCL jobs(s), 0 CICS transaction(s).</div>
       </div>
 
-      <div class="diag-card">
+      <div class="chart-wrapper dark">
         <h4>Batch Flow</h4>
         <div class="mono">
           1. SUBTRACT<br>
@@ -1428,13 +1438,13 @@ function renderDiagnostics() {
         </div>
       </div>
 
-      <div class="diag-card">
+      <div class="chart-wrapper dark">
         <h4>Risk Snapshot</h4>
         <div class="pill green">Good</div>
         <div class="empty">1 unused program(s), 0 missing calls</div>
       </div>
 
-      <div class="diag-card">
+      <div class="chart-wrapper dark">
         <h4>System Personality</h4>
         <div class="empty">Library / mixed</div>
       </div>
@@ -1477,7 +1487,7 @@ function restoreDashboard() {
   isConvertMode = false;
 
   setState({
-  section: "Code Wiki",  
+  section: "Analysis Engine",  
   page: "Dashboard",
   view: "Overview"
 });
