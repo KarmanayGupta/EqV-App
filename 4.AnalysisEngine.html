@@ -113,16 +113,52 @@
       flex-direction: column;
     }
 
-    .continuity {
-      height: 56px;
-      padding: 0 48px;
-      display: flex;
-      align-items: center;
-      font-size: 13px;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      background: rgba(17, 22, 31, 0.75);
-    }
+      /* Tabs */
+      .dashboard-tabs {
+  display: flex;
+  gap: 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 22px;
+  padding-bottom: 4px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 0;
+  cursor: pointer;
+  position: relative;
+  transition: 0.25s ease;
+}
+
+.tab:hover {
+  color: var(--text-primary);
+}
+
+.tab.active {
+  color: var(--accent-2);
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-2);
+  border-radius: 2px;
+}
+
+      /* Scroll */
+      .scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px;
+}
 
     .continuity span {
       color: var(--accent-2);
@@ -530,118 +566,442 @@
       border-radius: 10px;
     }
 
-    .nav-item:hover,
-    .sub-nav:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-primary);
-      transform: translateX(4px);
-    }
+      .folder {
+  cursor: pointer;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
 
-    .nav-item:active,
-    .sub-nav:active {
-      transform: scale(0.97);
-    }
+.folder-inner {
+  margin-left: 16px;
+  margin-top: 6px;
+  display: none;
+}
 
-    /* Subtle ripple effect */
-    .nav-item::after,
-    .sub-nav::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.08);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
+.folder.open > .folder-inner {
+  display: block;
+}
 
-    .nav-item:active::after,
-    .sub-nav:active::after {
-      opacity: 1;
-    }
+.file:hover {
+  color: var(--accent-2);
+  transition: 0.2s ease;
+}
+.file {
+  margin-left: 22px;
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 6px 0;
+  cursor: pointer;
 
-    /* cta button design */
-    .convert-cta {
-      margin-top: 56px;
-      padding: 12px 16px;
-      border-radius: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fade-transition {
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
 
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      text-align: center;
-      cursor: pointer;
+.fade-transition.fade-out {
+  opacity: 0;
+}
+.sidebar-animate {
+  animation: sidebarSwap 0.3s ease;
+}
+/* ================= VS CODE STYLE TREE ================= */
 
-      background: #0f141b;
+.tree {
+  font-size: 14px;
+  line-height: 1.6;
+}
 
-      border: 1px solid transparent;
-      background-image:
-        linear-gradient(#0f141b, #0f141b),
-        linear-gradient(90deg, #6c5ce7, #00d4ff);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
+.tree-item {
+  position: relative;
+}
 
-      color: var(--accent-2);
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
+}
 
-      box-shadow: 0 0 16px rgba(0, 212, 255, 0.08);
-      transition: all 0.25s ease;
-    }
+.tree-row:hover {
+  color: var(--accent-2);
+}
 
-    .convert-cta:hover {
-      box-shadow: 0 0 28px rgba(0, 212, 255, 0.2);
-      transform: translateY(-2px);
-    }
+/* Arrow */
+.arrow {
+  width: 14px;
+  display: flex;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
 
-    .convert-active {
-      background: linear-gradient(90deg,
-          rgba(108, 92, 231, 0.22),
-          rgba(0, 212, 255, 0.18));
+.arrow::before {
+  content: "▶";
+}
 
-      color: #ffffff;
+.folder.open > .tree-row .arrow::before {
+  content: "▼";
+}
 
-      border: 1px solid rgba(0, 212, 255, 0.45);
+/* Children container */
+.tree-children {
+  margin-left: 14px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255,255,255,0.08); 
+  display: none;
+}
 
-      box-shadow:
-        0 0 20px rgba(0, 212, 255, 0.18),
-        inset 0 0 10px rgba(108, 92, 231, 0.12);
-    }
+.folder.open > .tree-children {
+  display: block;
+}
 
-    .footer-brand {
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 12px;
-      background: linear-gradient(90deg, #6c5ce7, #00d4ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+/* File styling */
+.file {
+  padding: 4px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-    .system-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+.file:hover {
+  color: var(--accent-2);
+}
 
-    .sidebar-spacer {
-      flex: 1;
-      /* pushes button downward */
-    }
+@keyframes sidebarSwap {
+  0% { opacity: 0; transform: translateX(-10px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
 
-    .sidebar .convert-cta {
-      align-self: flex-start;
-      /* prevent full width stretch */
-    }
-  </style>
-</head>
+/* ================= INTERACTIVE BUTTON EFFECT ================= */
 
-<body>
-  <div class="sidebar">
-    <div>
-      <div class="logo">EquiValic</div>
-      <div class="nav-item active">Code Wiki</div>
-      <div class="nav-item">Conversion Metric</div>
-      <div class="nav-item">Test Accuracy</div>
-      <div class="nav-item">Optimisation</div>
+.nav-item,
+.sub-nav {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 10px;
+}
+
+.nav-item:hover,
+.sub-nav:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  transform: translateX(4px);
+}
+
+.nav-item:active,
+.sub-nav:active {
+  transform: scale(0.97);
+}
+
+/* Subtle ripple effect */
+.nav-item::after,
+.sub-nav::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.nav-item:active::after,
+.sub-nav:active::after {
+  opacity: 1;
+}
+/* cta button design */
+.convert-cta {
+    margin-top: 56px;
+  padding: 12px 16px;
+  border-radius: 20px;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+
+  background: #0f141b;
+
+  border: 1px solid transparent;
+  background-image:
+    linear-gradient(#0f141b, #0f141b),
+    linear-gradient(90deg, #6c5ce7, #00d4ff);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  color: var(--accent-2);
+
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.08);
+  transition: all 0.25s ease;
+}
+
+.convert-cta:hover {
+  box-shadow: 0 0 28px rgba(0, 212, 255, 0.2);
+  transform: translateY(-2px);
+}
+.convert-active {
+  background: linear-gradient(
+    90deg,
+    rgba(108, 92, 231, 0.22),
+    rgba(0, 212, 255, 0.18)
+  );
+
+  color: #ffffff;
+
+  border: 1px solid rgba(0, 212, 255, 0.45);
+
+  box-shadow:
+    0 0 20px rgba(0, 212, 255, 0.18),
+    inset 0 0 10px rgba(108, 92, 231, 0.12);
+}
+.footer-brand {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  font-size: 12px;
+  background: linear-gradient(90deg, #6c5ce7, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.system-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.sidebar-spacer {
+  flex: 1;   /* pushes button downward */
+}
+
+.sidebar .convert-cta {
+  align-self: flex-start; /* prevent full width stretch */
+}
+
+/*Project Summary Styles*/
+/* ===== CONVERT SUMMARY ===== */
+
+.convert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.convert-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.convert-badge {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(0,212,255,0.12);
+  color: var(--accent-2);
+}
+
+/* Stats */
+.convert-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.convert-stat {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: center;
+}
+
+.convert-stat .value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.diag-stat .label {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* Cards */
+.convert-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.convert-card h4 {
+  margin-bottom: 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Rows */
+.convert-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Pills */
+.pill {
+  background: rgba(0,212,255,0.12);
+  color: var(--accent-2);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.pill.yellow {
+  background: rgba(255,193,7,0.12);
+  color: #ffc107;
+}
+
+.pill.orange {
+  background: rgba(255,107,107,0.12);
+  color: #ff6b6b;
+}
+
+/* Empty states */
+.empty {
+  font-size: 13px;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* ===== DIAGNOSTICS ===== */
+
+.diag-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.diag-stat {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: center;
+}
+
+.diag-stat .value {
+  font-size: 42px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.diag-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.diag-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.diag-card.full {
+  grid-column: span 2;
+}
+
+.diag-card h4 {
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.mono {
+  font-family: monospace;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.table .row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 6px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* 2 column table (Programs not used) */
+.table.two-col .row {
+  grid-template-columns: 1fr 2fr;
+}
+
+/* 4 column table (External calls) */
+.table.four-col .row {
+  grid-template-columns: 1fr 1fr 1fr 2fr;
+}
+
+.table .header {
+  font-weight: 600;
+  color: var(--text-primary);
+  opacity: 0.85;
+}
+
+.pill.green {
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+  padding: 4px 10px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.diag-stat.stat-card {
+  padding: 22px;
+}
+
+.chart-wrapper.dark {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+}
+
+.chart-wrapper.dark h4 {
+  color: var(--accent-2); /* blue title */
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div>
+        <div class="logo">EquiValic</div>
+        <div class="nav-item active">Analysis Engine</div>
+        <div class="nav-item">Conversion Engine</div>
+        <div class="nav-item">Test Engine</div>
+        <div class="nav-item">Optimisation Engine</div>
+      </div>
+      <div class="nav-item">Settings</div>
     </div>
     <div class="nav-item">Settings</div>
   </div>
@@ -649,25 +1009,26 @@
   <div class="app">
     <div class="continuity" id="appBreadcrumb"></div>
 
-    <div class="workspace">
-      <div class="left-panel">
-        <div class="sub-nav active">Dashboard</div>
-        <div class="sub-nav" id="codeWikiTrigger">Code Wiki</div>
-        <div class="sub-nav">Application Status</div>
-        <div class="convert-cta">
-          <span>Convert Code</span>
+      <div class="workspace">
+        <div class="left-panel">
+          <div class="sub-nav active">Dashboard</div>
+          <div class="sub-nav" id="codeWikiTrigger">Code Wiki</div>
+          <div class="sub-nav">System Diagnostics</div>
+          <div class="convert-cta">
+            <span>Convert Code</span>
+          </div>
         </div>
       </div>
 
-      <div class="display-panel">
-        <div class="dashboard-tabs">
-          <button class="tab active" data-view="overview">Overview</button>
-          <button class="tab" data-view="anatomy">Anatomy</button>
-          <button class="tab" data-view="graph">Dependency Graph</button>
-          <button class="tab" data-view="risk">Risk Mitigation</button>
-          <div class="tab-indicator"></div>
-        </div>
-        <div id="previewContent"></div>
+        <div class="display-panel">
+          <div class="dashboard-tabs">
+            <button class="tab active" data-view="overview">Overview</button>
+            <button class="tab" data-view="anatomy">Anatomy</button>
+            <button class="tab" data-view="graph">Dependency Graph</button>
+            <button class="tab" data-view="risk">Risk Mitigation</button>
+            <div class="tab-indicator"></div>
+          </div>
+<div id="previewContent" class="scroll-container"></div>        </div>
       </div>
     </div>
 
@@ -679,12 +1040,12 @@
 
     <script>
 
-      const appState = {
-        product: "Product Suite",
-        section: "Code Wiki",
-        page: "Dashboard",
-        view: "Overview"
-      };
+const appState = {
+  product: "Product Suite",
+  section: "Analysis Engine",
+  page: "Dashboard",
+  view: "Overview"
+};
 
       function renderHeader() {
         const el = document.getElementById("appBreadcrumb");
@@ -793,60 +1154,74 @@ Click graph to zoom
       }
 
       function renderRisk() {
-        return `
-<div class="risk-list">
-
-  <div class="risk-item">
+  return `
+  
+  <!-- TOP HEALTH -->
+  <div class="risk-item" style="margin-bottom:20px;">
     <div class="risk-row">
       <div class="risk-text">
-        <div class="risk-title">Dead Code</div>
-        <div class="risk-desc">
-          Unreachable paragraphs and sections found in 12 programs
-        </div>
+        <div class="risk-title">Dependency Health</div>
+        <div class="risk-desc">Overall system dependency score</div>
       </div>
-      <div class="risk-value">23</div>
+      <div class="risk-value" style="color:#2ecc71;">98</div>
     </div>
   </div>
 
-  <div class="risk-item">
-    <div class="risk-row">
-      <div class="risk-text">
-        <div class="risk-title">Missing Dependencies</div>
-        <div class="risk-desc">
-          Copybooks and external calls not resolved
-        </div>
+  <!-- SUMMARY CARDS -->
+  <div class="stats-grid" style="margin-bottom:24px;">
+    
+    <div class="stat-card">
+      <div class="stat-value">1</div>
+      <div class="stat-label">Programs not used</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-value">0</div>
+      <div class="stat-label">External Calls</div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 1 -->
+<div class="chart-wrapper dark">
+      <h4>Programs not used in this codebase</h4>
+
+    <div class="table two-col">
+      <div class="row header">
+        <span>Program</span>
+        <span>Why</span>
       </div>
-      <div class="risk-value">12</div>
+
+      <div class="row">
+        <span>MAINPROG</span>
+        <span>Not called by any program, JCL, or CICS</span>
+      </div>
     </div>
   </div>
 
-  <div class="risk-item">
-    <div class="risk-row">
-      <div class="risk-text">
-        <div class="risk-title">High Complexity Files</div>
-        <div class="risk-desc">
-          Files with cyclomatic complexity greater than 50
-        </div>
-      </div>
-      <div class="risk-value">8</div>
-    </div>
-  </div>
+  <!-- SECTION 2 -->
+<div class="chart-wrapper dark">
+      <h4>Calls to programs outside this project</h4>
 
-  <div class="risk-item">
-    <div class="risk-row">
-      <div class="risk-text">
-        <div class="risk-title">CICS Files</div>
-        <div class="risk-desc">
-          CICS related modules requiring review
-        </div>
+    <div class="table four-col">
+      <div class="row header">
+        <span>Caller</span>
+        <span>Calls</span>
+        <span>Note</span>
+        <span>Why</span>
       </div>
-      <div class="risk-value">45</div>
-    </div>
-  </div>
 
+        <div class="row">
+  <span style="grid-column: span 4; text-align:left;">
+    No calls to missing programs
+  </span>
 </div>
-`;
-      }
+
+    </div>
+  </div>
+
+  `;
+}
 
       function initCharts(view) {
         destroyCharts();
@@ -1013,126 +1388,29 @@ Click graph to zoom
       const originalLeftPanel = leftPanel.innerHTML;
       const originalDisplayPanel = displayPanel.innerHTML;
 
-      function activateCodeWiki() {
+function activateConvertMode() {
 
-        appState.page = "Code Wiki";
-        appState.subPage = "Explorer";
-        appState.view = "Info";
-        renderHeader();
+if (isConvertMode) return;
 
-        isWikiMode = true;
-        isConvertMode = false;
+isConvertMode = true;
+isWikiMode = false;
 
-        // Remove active from all sidebar items
-        document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+setState({
+  section: "Analysis",
+  page: "Summary Overview",
+  view: "Overview"
+});
 
-        // Animate sidebar swap
-        sidebarTop.classList.add("sidebar-animate");
+// Remove active from sidebar
+document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
 
-        sidebarTop.innerHTML = `
-  <div class="logo">EquiValic</div>
-  <div class="sub-nav" id="backToDashboard">Dashboard</div>
-  <div class="sub-nav active">Code Wiki</div>
-  <div class="sub-nav">Application Status</div>
-  <div class="convert-cta" id="dashboardConvertBtn">
-  <span>Convert Code</span>
-</div>
-`;
-
-        setTimeout(() => {
-          sidebarTop.classList.remove("sidebar-animate");
-        }, 300);
-
-        // Fade left & display panels
-        leftPanel.classList.add("fade-transition", "fade-out");
-        displayPanel.classList.add("fade-transition", "fade-out");
-
-        setTimeout(() => {
-
-          leftPanel.innerHTML = `
-  <div class="tree">
-
-    <div class="tree-item folder">
-      <div class="tree-row">
-        <span class="arrow"></span>
-        <span class="folder-name">src</span>
-      </div>
-      <div class="tree-children">
-
-        <div class="tree-item folder">
-          <div class="tree-row">
-            <span class="arrow"></span>
-            <span class="folder-name">controllers</span>
-          </div>
-          <div class="tree-children">
-            <div class="tree-item file">userController_withVeryLongFileNameExample.cbl</div>
-            <div class="tree-item file">paymentController.cbl</div>
-          </div>
-        </div>
-
-        <div class="tree-item folder">
-          <div class="tree-row">
-            <span class="arrow"></span>
-            <span class="folder-name">services</span>
-          </div>
-          <div class="tree-children">
-            <div class="tree-item file">billingService.cbl</div>
-            <div class="tree-item file">authService.cbl</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-`;
-
-          displayPanel.innerHTML = `
-    <div class="dashboard-tabs">
-      <button class="tab active">Info</button>
-      <button class="tab">SQL</button>
-      <button class="tab">Tree</button>
-      <button class="tab">Graph</button>
-      <button class="tab">Artifacts</button>
-      <button class="tab">JSON</button>
-    </div>
-
-    <div id="wikiContent" style="color:var(--text-muted);margin-top:20px;">
-      Select a file to view details.
-    </div>
-  `;
-
-          leftPanel.classList.remove("fade-out");
-          displayPanel.classList.remove("fade-out");
-
-          attachWikiEvents();
-
-        }, 200);
-      }
-
-      function activateConvertMode() {
-
-        if (isConvertMode) return;
-
-        isConvertMode = true;
-        isWikiMode = false;
-
-        setState({
-          section: "Code Wiki",
-          page: "Summary Overview",
-          view: "Overview"
-        });
-
-        // Remove active from sidebar
-        document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-
-        sidebarTop.classList.add("sidebar-animate");
+sidebarTop.classList.add("sidebar-animate");
 
         sidebarTop.innerHTML = `
   <div class="logo">EquiValic</div>
   <div class="sub-nav" id="backToDashboard">Dashboard</div>
   <div class="sub-nav">Code Wiki</div>
-  <div class="sub-nav">Application Status</div>
+  <div class="sub-nav">System Diagnostics</div>
   <div class="convert-cta convert-active">Code Convert</div>
 `;
 
@@ -1140,50 +1418,242 @@ Click graph to zoom
           sidebarTop.classList.remove("sidebar-animate");
         }, 300);
 
-        leftPanel.classList.add("fade-transition", "fade-out");
-        displayPanel.classList.add("fade-transition", "fade-out");
+leftPanel.classList.add("fade-transition","fade-out");
+displayPanel.classList.add("fade-transition","fade-out");
 
         setTimeout(() => {
 
-          leftPanel.innerHTML = `
-    <div class="sub-nav active">Project Summary</div>
+  // ✅ LEFT PANEL (FIXED)
+  leftPanel.innerHTML = `
+    <div class="sub-nav active" data-convert="overview">Overview</div>
+    <div class="sub-nav" data-convert="classification">Classification</div>
+    <div class="sub-nav" data-convert="insights">Insights</div>
+
+    <div style="height:16px;"></div>
 
     <div class="convert-cta" id="moveToConversion">
       Proceed to Conversion
     </div>
   `;
 
-          displayPanel.innerHTML = `
-    <div class="dashboard-tabs">
-      <button class="tab active">A</button>
-      <button class="tab">B</button>
-      <button class="tab">C</button>
-      <button class="tab">D</button>
-    </div>
+  // ✅ DISPLAY PANEL (EMPTY + HEADER ONLY)
+  displayPanel.innerHTML = `
+    <div class="scroll-container">
+      <div id="convertContent">
 
-    <div id="convertContent" style="color:var(--text-muted);margin-top:20px;">
-      Data fetching soon...
+        <div class="convert-header">
+          <div class="convert-title">Project Summary</div>
+          <div class="convert-badge">testing multiple</div>
+        </div>
+
+      </div>
     </div>
   `;
 
-          leftPanel.classList.remove("fade-out");
-          displayPanel.classList.remove("fade-out");
+  leftPanel.classList.remove("fade-out");
+  displayPanel.classList.remove("fade-out");
 
-          attachConvertEvents();
+  attachConvertEvents();
 
-        }, 200);
-      }
+  // ✅ DEFAULT LOAD
+  renderConvertOverview();
+
+}, 200);
+}
+
+function renderConvertOverview() {
+  document.getElementById("convertContent").innerHTML += `
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-value">2</div><div class="stat-label">Total Programs</div></div>
+      <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">SQL Statements</div></div>
+      <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">Tables Accessed</div></div>
+      <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">DB2 Programs</div></div>
+    </div>
+  `;
+}
+
+function renderConvertInsights() {
+  document.getElementById("convertContent").innerHTML += `
+    <div class="chart-wrapper dark">
+      <h4>SQL Analysis</h4>
+      <div class="empty">No SQL data available</div>
+    </div>
+
+    <div class="chart-wrapper dark">
+      <h4>Table Usage</h4>
+      <div class="empty">No table usage data available</div>
+    </div>
+
+    <div class="chart-wrapper dark">
+      <h4>Recommendations & Insights</h4>
+      <div class="empty">No recommendations available</div>
+    </div>
+  `;
+}
+
+function renderConvertClassification() {
+  document.getElementById("convertContent").innerHTML += `
+    <div class="chart-wrapper dark">
+      <h4>Classification Breakdown</h4>
+
+      <div class="convert-row">
+        <span>Execution Environment</span>
+        <span class="pill">Batch (2)</span>
+      </div>
+
+      <div class="convert-row">
+        <span>Functional Role</span>
+        <span class="pill yellow">Main Programs (2)</span>
+      </div>
+
+      <div class="convert-row">
+        <span>Programming Model</span>
+        <span class="pill orange">Structured COBOL (2)</span>
+      </div>
+    </div>
+  `;
+}
+
+function activateDiagnosticsMode() {
+
+  isWikiMode = false;
+  isConvertMode = false;
+
+  setState({
+    section: "Analysis Engine",
+    page: "System Diagnostics",
+    view: "Overview"
+  });
+
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+
+  sidebarTop.classList.add("sidebar-animate");
+
+  sidebarTop.innerHTML = `
+    <div class="logo">EquiValic</div>
+    <div class="sub-nav" id="backToDashboard">Dashboard</div>
+    <div class="sub-nav">Code Wiki</div>
+    <div class="sub-nav active">System Diagnostics</div>
+    <div class="convert-cta" id="dashboardConvertBtn">
+    <span>Convert Code</span>
+  </div>
+  `;
+
+  setTimeout(() => {
+    sidebarTop.classList.remove("sidebar-animate");
+  }, 300);
+
+  leftPanel.classList.add("fade-transition","fade-out");
+  displayPanel.classList.add("fade-transition","fade-out");
+
+  setTimeout(() => {
+
+    leftPanel.innerHTML = `
+      <div class="sub-nav active">Diagnostics Overview</div>
+    `;
+
+    displayPanel.innerHTML = renderDiagnostics();
+
+    leftPanel.classList.remove("fade-out");
+    displayPanel.classList.remove("fade-out");
+
+    attachDiagnosticsEvents();
+    attachConvertEvents();
+
+  }, 200);
+}
+
+function renderDiagnostics() {
+  return `
+  <div class="scroll-container">
+    <div class="diag-container">
+
+    <!-- TOP STATS -->
+    <div class="diag-stats">
+      <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Programs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Dependencies</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Entry Points</div>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="diag-grid">
+
+      <div class="chart-wrapper dark">
+        <h4>Entry Points</h4>
+        <div class="empty">0 total: 0 JCL jobs(s), 0 CICS transaction(s).</div>
+      </div>
+
+      <div class="chart-wrapper dark">
+        <h4>Batch Flow</h4>
+        <div class="mono">
+          1. SUBTRACT<br>
+          2. MULTIPLY<br>
+          3. DIVIDE
+        </div>
+      </div>
+
+      <div class="chart-wrapper dark">
+        <h4>Risk Snapshot</h4>
+        <div class="pill green">Good</div>
+        <div class="empty">1 unused program(s), 0 missing calls</div>
+      </div>
+
+      <div class="chart-wrapper dark">
+        <h4>System Personality</h4>
+        <div class="empty">Library / mixed</div>
+      </div>
+
+      <div class="diag-card full">
+        <h4>Most Called Programs</h4>
+        <div class="table">
+          <div class="row header">
+            <span>Program</span>
+            <span>Called</span>
+            <span>Callers</span>
+          </div>
+          <div class="row">
+            <span>CALCUTIL</span>
+            <span>1</span>
+            <span>MAINPROG</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="diag-card full">
+        <h4>Top Copybooks</h4>
+        <div class="empty">DATADEF used by 2 programs</div>
+      </div>
+
+      <div class="diag-card full">
+        <h4>Top DB2 Tables</h4>
+        <div class="empty">No tables found</div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+  `;
+}
 
       // Restore Original MVP
       function restoreDashboard() {
         isWikiMode = false;
         isConvertMode = false;
 
-        setState({
-          section: "Code Wiki",
-          page: "Dashboard",
-          view: "Overview"
-        });
+  setState({
+  section: "Analysis Engine",  
+  page: "Dashboard",
+  view: "Overview"
+});
 
         sidebarTop.classList.add("sidebar-animate");
 
@@ -1207,7 +1677,7 @@ Click graph to zoom
         <button class="tab" data-view="risk">Risk Mitigation</button>
         <div class="tab-indicator"></div>
       </div>
-      <div id="previewContent"></div>
+      <div id="previewContent" class="scroll-container"></div>
     `;
 
           updateView("overview");
@@ -1275,8 +1745,30 @@ Click graph to zoom
       </div>
       Conversion engine launching soon...
     `;
-          });
-        }
+  });
+  document.querySelectorAll("[data-convert]").forEach(item => {
+  item.addEventListener("click", () => {
+
+    document.querySelectorAll("[data-convert]").forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
+
+    // 🔥 CLEAR OLD CONTENT BUT KEEP HEADER
+    const container = document.getElementById("convertContent");
+    container.innerHTML = `
+      <div class="convert-header">
+        <div class="convert-title">Project Summary</div>
+        <div class="convert-badge">testing multiple</div>
+      </div>
+    `;
+
+    const type = item.dataset.convert;
+
+    if (type === "overview") renderConvertOverview();
+    if (type === "classification") renderConvertClassification();
+    if (type === "insights") renderConvertInsights();
+  });
+});
+}
 
         document.querySelectorAll(".tab").forEach(tab => {
           tab.addEventListener("click", () => {
@@ -1319,7 +1811,116 @@ Click graph to zoom
           return;
         }
 
-      });
+// System Diagnostics and Settings can have their own handlers here//
+if (text === "System Diagnostics") {
+  activateDiagnosticsMode();
+  return;
+}
+
+function activateCodeWiki() {
+
+  appState.page = "Code Wiki";
+  appState.subPage = "Explorer";
+  appState.view = "Summary";
+  renderHeader();
+
+  isWikiMode = true;
+  isConvertMode = false;
+
+  // Remove active from sidebar
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+
+  // Sidebar animation
+  sidebarTop.classList.add("sidebar-animate");
+
+  sidebarTop.innerHTML = `
+    <div class="logo">EquiValic</div>
+    <div class="sub-nav" id="backToDashboard">Dashboard</div>
+    <div class="sub-nav active">Code Wiki</div>
+    <div class="sub-nav">System Diagnostics</div>  <!-- ✅ FIXED -->
+    <div class="convert-cta" id="dashboardConvertBtn">
+      <span>Convert Code</span>
+    </div>
+  `;
+
+  setTimeout(() => {
+    sidebarTop.classList.remove("sidebar-animate");
+  }, 300);
+
+  // Fade panels
+  leftPanel.classList.add("fade-transition","fade-out");
+  displayPanel.classList.add("fade-transition","fade-out");
+
+  setTimeout(() => {
+
+    // ✅ TREE (AUTO-OPEN FIXED)
+    leftPanel.innerHTML = `
+      <div class="tree">
+
+        <div class="tree-item folder open">
+          <div class="tree-row">
+            <span class="arrow"></span>
+            <span class="folder-name">src</span>
+          </div>
+
+          <div class="tree-children">
+
+            <div class="tree-item folder open">
+              <div class="tree-row">
+                <span class="arrow"></span>
+                <span class="folder-name">controllers</span>
+              </div>
+
+              <div class="tree-children">
+                <div class="tree-item file">userController_withVeryLongFileNameExample.cbl</div>
+                <div class="tree-item file">paymentController.cbl</div>
+              </div>
+            </div>
+
+            <div class="tree-item folder open">
+              <div class="tree-row">
+                <span class="arrow"></span>
+                <span class="folder-name">services</span>
+              </div>
+
+              <div class="tree-children">
+                <div class="tree-item file">billingService.cbl</div>
+                <div class="tree-item file">authService.cbl</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    `;
+
+    // ✅ TABS (MATCH CLIENT UI)
+    displayPanel.innerHTML = `
+      <div class="dashboard-tabs">
+        <button class="tab active">Summary</button>
+        <button class="tab">SQL</button>
+        <button class="tab">Tree</button>
+        <button class="tab">Mind Map</button>
+        <button class="tab">Graph</button>
+        <button class="tab">Variables</button>
+        <button class="tab">JSON</button>
+      </div>
+
+      <div id="wikiContent" style="color:var(--text-muted);margin-top:20px;">
+        Select a COBOL program to see summary
+      </div>
+    `;
+
+    leftPanel.classList.remove("fade-out");
+    displayPanel.classList.remove("fade-out");
+
+    attachWikiEvents();
+
+  }, 200);
+}
+
+});
     </script>
 </body>
 
