@@ -1,185 +1,117 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EquiValic | Analysis Metrics</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-    <style>
-      :root {
-        --bg: #0c0f14;
-        --sidebar-bg: #0f141b;
-        --panel-bg: #141a24;
-        --panel-bg-light: #1c2230;
-        --border: rgba(255, 255, 255, 0.07);
-        --text-primary: #f1f3f8;
-        --text-muted: #8f9bad;
-        --accent-1: #6c5ce7;
-        --accent-2: #00d4ff;
-        --danger: #ff4d4f;
-        --radius: 14px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EquiValic | Analysis Metrics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-      /* Base */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Inter", sans-serif;
-      }
-      body {
-        background: var(--bg);
-        color: var(--text-primary);
-        height: 100vh;
-        display: flex;
-        overflow: hidden;
-      }
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background: radial-gradient(
-            circle at 25% 30%,
-            rgba(108, 92, 231, 0.18),
-            transparent 45%
-          ),
-          radial-gradient(
-            circle at 75% 70%,
-            rgba(0, 212, 255, 0.12),
-            transparent 45%
-          );
-        animation: drift 16s ease-in-out infinite alternate;
-        z-index: -1;
-      }
-      @keyframes drift {
-        0% {
-          transform: scale(1);
-        }
-        100% {
-          transform: scale(1.05);
-        }
-      }
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --sidebar-bg: #0f141b;
+      --panel-bg: #141a24;
+      --panel-bg-light: #1c2230;
+      --border: rgba(255, 255, 255, 0.07);
+      --text-primary: #f1f3f8;
+      --text-muted: #8f9bad;
+      --accent-1: #6c5ce7;
+      --accent-2: #00d4ff;
+      --danger: #ff4d4f;
+      --radius: 14px;
+    }
 
-      /* Sidebar */
-      .sidebar {
-        width: 240px;
-        background: var(--sidebar-bg);
-        border-right: 1px solid var(--border);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 32px 20px;
-      }
-      .logo {
-        font-weight: 800;
-        font-size: 22px;
-        margin-bottom: 48px;
-      }
-      /* Unified Navigation Typography */
-      .nav-item,
-.sub-nav {
-  position: relative;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 10px;
-  margin-bottom: 12px; 
-}
-.nav-item {
-        padding: 12px 16px;
-        border-radius: 10px;
-        font-size: 14px;
-        color: var(--text-muted);
-        margin-bottom: 6px;
-      }
-      .nav-item.active {
-        background: linear-gradient(
-          90deg,
+    /* Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 25% 30%,
           rgba(108, 92, 231, 0.18),
-          transparent
-        );
-        color: var(--accent-2);
-        border-left: 3px solid var(--accent-1);
+          transparent 45%),
+        radial-gradient(circle at 75% 70%,
+          rgba(0, 212, 255, 0.12),
+          transparent 45%);
+      animation: drift 16s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+
+    @keyframes drift {
+      0% {
+        transform: scale(1);
       }
 
-      /* Layout */
-      .app {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
+      100% {
+        transform: scale(1.05);
       }
-      .continuity {
-        height: 56px;
-        padding: 0 48px;
-        display: flex;
-        align-items: center;
-        font-size: 13px;
-        color: var(--text-muted);
-        border-bottom: 1px solid var(--border);
-        background: rgba(17, 22, 31, 0.75);
-      }
-      .continuity span {
-        color: var(--accent-2);
-        font-weight: 600;
-      }
+    }
 
-      .workspace {
-        flex: 1;
-        display: grid;
-        grid-template-columns: 240px 1fr;
-        gap: 40px;
-        padding: 48px;
-        overflow: hidden;
-      }
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 32px 20px;
+    }
 
-      /* Left Panel */
-      .left-panel {
-        background: var(--panel-bg);
-        border-radius: var(--radius);
-        padding: 32px 28px;
-        border: 1px solid var(--border);
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        position: relative;
-      }
-      .sub-nav {
-        font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-        padding: 12px 16px;
-        border-radius: 10px;
-        color: var(--text-muted);
-      }
-      .sub-nav.active {
-        background: linear-gradient(
-          90deg,
+    .logo {
+      font-weight: 800;
+      font-size: 22px;
+      margin-bottom: 48px;
+    }
+
+    /* Unified Navigation Typography */
+    .nav-item,
+    .sub-nav {
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .nav-item {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(90deg,
           rgba(108, 92, 231, 0.18),
-          transparent
-        );
-        color: var(--accent-2);
-        border-left: 3px solid var(--accent-1);
-      }
+          transparent);
+      color: var(--accent-2);
+      border-left: 3px solid var(--accent-1);
+    }
 
-      /* Display */
-      .display-panel {
-        background: var(--panel-bg-light);
-        border-radius: var(--radius);
-        padding: 32px 48px;
-        border: 1px solid var(--border);
-        box-shadow: 0 0 60px rgba(0, 0, 0, 0.25);
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        overflow: hidden;
-      }
+    /* Layout */
+    .app {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
       /* Tabs */
       .dashboard-tabs {
@@ -228,138 +160,411 @@
   padding-right: 6px;
 }
 
-      /* Stats */
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-        margin-bottom: 32px;
-      }
-      .stat-card {
-        background: linear-gradient(
-          145deg,
+    .continuity span {
+      color: var(--accent-2);
+      font-weight: 600;
+    }
+
+    .workspace {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 40px;
+      padding: 48px;
+      overflow: hidden;
+    }
+
+    /* Left Panel */
+    .left-panel {
+      background: var(--panel-bg);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .sub-nav {
+      font-family: "Inter", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 12px 16px;
+      border-radius: 10px;
+      color: var(--text-muted);
+    }
+
+    .sub-nav.active {
+      background: linear-gradient(90deg,
+          rgba(108, 92, 231, 0.18),
+          transparent);
+      color: var(--accent-2);
+      border-left: 3px solid var(--accent-1);
+    }
+
+    /* Display */
+    .display-panel {
+      background: var(--panel-bg-light);
+      border-radius: var(--radius);
+      padding: 32px 48px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Tabs */
+    .dashboard-tabs {
+      display: flex;
+      gap: 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 22px;
+      padding-bottom: 4px;
+    }
+
+    .tab {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 0;
+      cursor: pointer;
+      position: relative;
+      transition: 0.25s ease;
+    }
+
+    .tab:hover {
+      color: var(--text-primary);
+    }
+
+    .tab.active {
+      color: var(--accent-2);
+    }
+
+    .tab.active::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--accent-2);
+      border-radius: 2px;
+    }
+
+    /* Scroll */
+    #previewContent {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: linear-gradient(145deg,
           rgba(108, 92, 231, 0.15),
-          rgba(0, 212, 255, 0.05)
-        );
-        border: 1px solid var(--accent-1);
-        border-radius: var(--radius);
-        padding: 28px 20px;
-        text-align: center;
-      }
-      .stat-value {
-        font-size: 42px;
-        font-weight: 800;
-        color: #ffffff;
-      }
-      .stat-label {
-        font-size: 14px;
-        color: var(--text-muted);
+          rgba(0, 212, 255, 0.05));
+      border: 1px solid var(--accent-1);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 42px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Charts */
+    .chart-wrapper {
+      background: rgb(255, 248, 232);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .chart-container {
+      height: 260px;
+    }
+
+    .chart-wrapper h4 {
+      color: #000;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    /* Graph */
+    .graph-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .graph-btn {
+      background: #6366f1;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .graph-btn:hover {
+      background: #4f46e5;
+      transform: translateY(-1px);
+    }
+    .graph-btn:active {
+       transform: translateY(0);
+    }
+    .graph-container {
+      width: 100%;
+      height: 450px;
+      background: rgb(255, 248, 232);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      cursor: zoom-in;
+      overflow: hidden;
+      position: relative;
+    }
+    .graph-container svg {
+      width: 100%;
+      height: 100%;
+      transition: 0.4s;
+    }
+    .graph-container.zoomed svg {
+      transform: scale(1.4);
+      cursor: zoom-out;
+    }
+    .node {
+      fill: var(--accent-1);
+      transition: fill 0.2s;
+    }
+    .node:hover {
+      fill: var(--accent-2) !important;
+    }
+
+
+    /* Risk */
+
+    .risk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .risk-item {
+      background: linear-gradient(90deg,
+          rgba(12, 18, 32, 0.95),
+          rgba(18, 26, 42, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 14px 22px;
+    }
+
+    .risk-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .risk-text {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .risk-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #27d3ff;
+    }
+
+    .risk-desc {
+      font-size: 14px;
+      color: #9aa7b8;
+    }
+
+    .risk-value {
+      font-size: 30px;
+      font-weight: 800;
+      color: #fff9f9;
+      line-height: 1;
+    }
+
+    /* Bottom */
+    .system-bar {
+      height: 50px;
+      border-top: 1px solid var(--border);
+      background: #111722;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .folder {
+      cursor: pointer;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .folder-inner {
+      margin-left: 16px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .folder.open>.folder-inner {
+      display: block;
+    }
+
+    .file:hover {
+      color: var(--accent-2);
+      transition: 0.2s ease;
+    }
+
+    .file {
+      margin-left: 22px;
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 6px 0;
+      cursor: pointer;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fade-transition {
+      opacity: 1;
+      transition: opacity 0.25s ease;
+    }
+
+    .fade-transition.fade-out {
+      opacity: 0;
+    }
+
+    .sidebar-animate {
+      animation: sidebarSwap 0.3s ease;
+    }
+
+    /* ================= VS CODE STYLE TREE ================= */
+
+    .tree {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .tree-item {
+      position: relative;
+    }
+
+    .tree-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+      cursor: pointer;
+    }
+
+    .tree-row:hover {
+      color: var(--accent-2);
+    }
+
+    /* Arrow */
+    .arrow {
+      width: 14px;
+      display: flex;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    .arrow::before {
+      content: "▶";
+    }
+
+    .folder.open>.tree-row .arrow::before {
+      content: "▼";
+    }
+
+    /* Children container */
+    .tree-children {
+      margin-left: 14px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      display: none;
+    }
+
+    .folder.open>.tree-children {
+      display: block;
+    }
+
+    /* File styling */
+    .file {
+      padding: 4px 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file:hover {
+      color: var(--accent-2);
+    }
+
+    @keyframes sidebarSwap {
+      0% {
+        opacity: 0;
+        transform: translateX(-10px);
       }
 
-      /* Charts */
-      .chart-wrapper {
-        background: rgb(255, 248, 232);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 24px;
-        margin-bottom: 24px;
+      100% {
+        opacity: 1;
+        transform: translateX(0);
       }
-      .chart-container {
-        height: 260px;
-      }
-      .chart-wrapper h4 {
-  color: #000;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
+    }
 
-      /* Graph */
-      .graph-container {
-        width: 100%;
-        height: 450px;
-        background: rgb(255, 248, 232);
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        cursor: zoom-in;
-        overflow: hidden;
-      }
-      .graph-container svg {
-        width: 100%;
-        height: 100%;
-        transition: 0.4s;
-      }
-      .graph-container.zoomed svg {
-        transform: scale(1.4);
-        cursor: zoom-out;
-      }
-      .node {
-        fill: var(--accent-1);
-      }
-      .node:hover {
-        fill: var(--accent-2);
-      }
+    /* ================= INTERACTIVE BUTTON EFFECT ================= */
 
-
-      /* Risk */
-
-.risk-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.risk-item {
-  background: linear-gradient(
-    90deg,
-    rgba(12,18,32,0.95),
-    rgba(18,26,42,0.95)
-  );
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 16px;
-  padding: 14px 22px;  
-}
-
-.risk-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;  
-}
-
-.risk-text {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;           
-}
-
-.risk-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #27d3ff;
-}
-
-.risk-desc {
-  font-size: 14px;
-  color: #9aa7b8;
-}
-
-.risk-value {
-  font-size: 30px;        
-  font-weight: 800;
-  color: #fff9f9;
-  line-height: 1;
-}
-      /* Bottom */
-      .system-bar {
-        height: 50px;
-        border-top: 1px solid var(--border);
-        background: #111722;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 48px;
-        font-size: 13px;
-        color: var(--text-muted);
-      }
+    .nav-item,
+    .sub-nav {
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 10px;
+    }
 
       .folder {
   cursor: pointer;
@@ -798,9 +1003,11 @@
       </div>
       <div class="nav-item">Settings</div>
     </div>
+    <div class="nav-item">Settings</div>
+  </div>
 
-    <div class="app">
-        <div class="continuity" id="appBreadcrumb"></div>
+  <div class="app">
+    <div class="continuity" id="appBreadcrumb"></div>
 
       <div class="workspace">
         <div class="left-panel">
@@ -811,6 +1018,7 @@
             <span>Convert Code</span>
           </div>
         </div>
+      </div>
 
         <div class="display-panel">
           <div class="dashboard-tabs">
@@ -822,12 +1030,13 @@
           </div>
 <div id="previewContent" class="scroll-container"></div>        </div>
       </div>
+    </div>
 
-      <div class="system-bar">
-        <div class="system-meta">All Systems Operational</div>
-        <div class="footer-brand">EquiValic™</div>
-        <div class="system-meta">v1.0.0</div>
-      </div>
+    <div class="system-bar">
+      <div class="system-meta">All Systems Operational</div>
+      <div class="footer-brand">EquiValic™</div>
+      <div class="system-meta">v1.0.0</div>
+    </div>
 
     <script>
 
@@ -838,22 +1047,22 @@ const appState = {
   view: "Overview"
 };
 
-function renderHeader() {
-  const el = document.getElementById("appBreadcrumb");
-  el.innerHTML = `
+      function renderHeader() {
+        const el = document.getElementById("appBreadcrumb");
+        el.innerHTML = `
   ${appState.product} >
   ${appState.section} >
   ${appState.page}
 `;
-}
+      }
 
 
 
-function setState(newState) {
-  Object.assign(appState, newState);
-  console.log("STATE:", appState);
-  renderHeader();
-}
+      function setState(newState) {
+        Object.assign(appState, newState);
+        console.log("STATE:", appState);
+        renderHeader();
+      }
 
       let charts = [];
 
@@ -862,30 +1071,30 @@ function setState(newState) {
         charts = [];
       }
 
-      
+
       function attachDashboardTabEvents() {
-  const tabs = document.querySelectorAll(".tab");
-  const indicator = document.querySelector(".tab-indicator");
+        const tabs = document.querySelectorAll(".tab");
+        const indicator = document.querySelector(".tab-indicator");
 
-  function positionIndicator(tab) {
-    if (!indicator || !tab) return;
-    indicator.style.width = tab.offsetWidth + "px";
-    indicator.style.left = tab.offsetLeft + "px";
-  }
+        function positionIndicator(tab) {
+          if (!indicator || !tab) return;
+          indicator.style.width = tab.offsetWidth + "px";
+          indicator.style.left = tab.offsetLeft + "px";
+        }
 
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      tabs.forEach((t) => t.classList.remove("active"));
-      tab.classList.add("active");
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            tabs.forEach((t) => t.classList.remove("active"));
+            tab.classList.add("active");
 
-      positionIndicator(tab);
-      updateView(tab.dataset.view);
-    });
-  });
+            positionIndicator(tab);
+            updateView(tab.dataset.view);
+          });
+        });
 
-  const activeTab = document.querySelector(".tab.active");
-  positionIndicator(activeTab);
-}
+        const activeTab = document.querySelector(".tab.active");
+        positionIndicator(activeTab);
+      }
 
       /* RENDER FUNCTIONS */
 
@@ -918,22 +1127,31 @@ function setState(newState) {
 </div>`;
       }
 
-      function renderGraph(){
-return `
+      function renderGraph() {
+        return `
+<div class="graph-controls">
+  <button class="graph-btn" id="zoomInBtn"><span>🔍</span> + Zoom In</button>
+  <button class="graph-btn" id="zoomOutBtn"><span>🔍</span> - Zoom Out</button>
+  <button class="graph-btn" id="scrollUpBtn"><span>▲</span> Scroll Up</button>
+  <button class="graph-btn" id="scrollDownBtn"><span>▼</span> Scroll Down</button>
+  <button class="graph-btn" id="resetBtn">Reset View</button>
+</div>
 <div class="graph-container" id="graphContainer">
-  <svg viewBox="0 0 400 400">
-    <circle class="node" cx="120" cy="120" r="20"/>
-    <circle class="node" cx="280" cy="100" r="20"/>
-    <circle class="node" cx="200" cy="220" r="20"/>
-    <line x1="120" y1="120" x2="200" y2="220" stroke="#8f9bad"/>
-    <line x1="280" y1="100" x2="200" y2="220" stroke="#8f9bad"/>
+  <svg id="dependencySvg" viewBox="0 0 400 400">
+    <g id="graphGroup">
+      <circle class="node" cx="120" cy="120" r="20"/>
+      <circle class="node" cx="280" cy="100" r="20"/>
+      <circle class="node" cx="200" cy="220" r="20"/>
+      <line x1="120" y1="120" x2="200" y2="220" stroke="#8f9bad" stroke-width="2"/>
+      <line x1="280" y1="100" x2="200" y2="220" stroke="#8f9bad" stroke-width="2"/>
+    </g>
   </svg>
 </div>
 <p style="text-align:center;color:#8f9bad;font-size:12px;margin-top:8px;">
 Click graph to zoom
 </p>
 `;
-}
+      }
 
       function renderRisk() {
   return `
@@ -1082,54 +1300,93 @@ Click graph to zoom
 
       function updateView(view) {
         setState({
-  view: view.charAt(0).toUpperCase() + view.slice(1)
-});
+          view: view.charAt(0).toUpperCase() + view.slice(1)
+        });
 
 
-const previewContent = document.getElementById("previewContent");
-if (!previewContent) return;
+        const previewContent = document.getElementById("previewContent");
+        if (!previewContent) return;
 
-const viewMap = {
-  overview: renderOverview,
-  anatomy: renderAnatomy,
-  graph: renderGraph,
-  risk: renderRisk
-};
+        const viewMap = {
+          overview: renderOverview,
+          anatomy: renderAnatomy,
+          graph: renderGraph,
+          risk: renderRisk
+        };
 
-previewContent.innerHTML = viewMap[view]?.();
+        previewContent.innerHTML = viewMap[view]?.();
 
-setTimeout(() => {
-  initCharts(view);
+        setTimeout(() => {
+          initCharts(view);
 
-  if (view === "graph") {
-    const container = document.getElementById("graphContainer");
-    if (container) {
-      container.addEventListener("click", () => {
-        container.classList.toggle("zoomed");
-      });
-    }
-  }
-}, 100);
-}
+          if (view === "graph") {
+            const container = document.getElementById("graphContainer");
+            if (container) {
+              container.addEventListener("click", (e) => {
+                // Only toggle if we didn't click a control button
+                if (!e.target.closest('.graph-controls')) {
+                  container.classList.toggle("zoomed");
+                }
+              });
+            }
+
+            const graphGroup = document.getElementById("graphGroup");
+            let scale = 1;
+            let translateY = 0;
+
+            const updateTransform = () => {
+              if (!graphGroup) return;
+              graphGroup.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+              graphGroup.style.transformOrigin = "center center";
+            };
+
+            document.getElementById("zoomInBtn")?.addEventListener("click", () => {
+              scale = Math.min(3, scale + 0.2);
+              updateTransform();
+            });
+
+            document.getElementById("zoomOutBtn")?.addEventListener("click", () => {
+              scale = Math.max(0.5, scale - 0.2);
+              updateTransform();
+            });
+
+            document.getElementById("scrollUpBtn")?.addEventListener("click", () => {
+              translateY += 30;
+              updateTransform();
+            });
+
+            document.getElementById("scrollDownBtn")?.addEventListener("click", () => {
+              translateY -= 30;
+              updateTransform();
+            });
+
+            document.getElementById("resetBtn")?.addEventListener("click", () => {
+              scale = 1;
+              translateY = 0;
+              updateTransform();
+            });
+          }
+        }, 100);
+      }
 
       updateView("overview");
       attachDashboardTabEvents();
 
 
-    // ===============================
-// MODE SWITCHING LOGIC
-// ===============================
+      // ===============================
+      // MODE SWITCHING LOGIC
+      // ===============================
 
-let isWikiMode = false;
-let isConvertMode = false;
+      let isWikiMode = false;
+      let isConvertMode = false;
 
-const sidebarTop = document.querySelector(".sidebar > div:first-child");
-const leftPanel = document.querySelector(".left-panel");
-const displayPanel = document.querySelector(".display-panel");
+      const sidebarTop = document.querySelector(".sidebar > div:first-child");
+      const leftPanel = document.querySelector(".left-panel");
+      const displayPanel = document.querySelector(".display-panel");
 
-const originalSidebar = sidebarTop.innerHTML;
-const originalLeftPanel = leftPanel.innerHTML;
-const originalDisplayPanel = displayPanel.innerHTML;
+      const originalSidebar = sidebarTop.innerHTML;
+      const originalLeftPanel = leftPanel.innerHTML;
+      const originalDisplayPanel = displayPanel.innerHTML;
 
 function activateConvertMode() {
 
@@ -1149,7 +1406,7 @@ document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active")
 
 sidebarTop.classList.add("sidebar-animate");
 
-sidebarTop.innerHTML = `
+        sidebarTop.innerHTML = `
   <div class="logo">EquiValic</div>
   <div class="sub-nav" id="backToDashboard">Dashboard</div>
   <div class="sub-nav">Code Wiki</div>
@@ -1157,14 +1414,14 @@ sidebarTop.innerHTML = `
   <div class="convert-cta convert-active">Code Convert</div>
 `;
 
-setTimeout(() => {
-  sidebarTop.classList.remove("sidebar-animate");
-}, 300);
+        setTimeout(() => {
+          sidebarTop.classList.remove("sidebar-animate");
+        }, 300);
 
 leftPanel.classList.add("fade-transition","fade-out");
 displayPanel.classList.add("fade-transition","fade-out");
 
-setTimeout(() => {
+        setTimeout(() => {
 
   // ✅ LEFT PANEL (FIXED)
   leftPanel.innerHTML = `
@@ -1387,10 +1644,10 @@ function renderDiagnostics() {
   `;
 }
 
-// Restore Original MVP
-function restoreDashboard() {
-  isWikiMode = false;
-  isConvertMode = false;
+      // Restore Original MVP
+      function restoreDashboard() {
+        isWikiMode = false;
+        isConvertMode = false;
 
   setState({
   section: "Analysis Engine",  
@@ -1398,21 +1655,21 @@ function restoreDashboard() {
   view: "Overview"
 });
 
-  sidebarTop.classList.add("sidebar-animate");
+        sidebarTop.classList.add("sidebar-animate");
 
-  sidebarTop.innerHTML = originalSidebar;
+        sidebarTop.innerHTML = originalSidebar;
 
-  setTimeout(() => {
-    sidebarTop.classList.remove("sidebar-animate");
-  }, 300);
+        setTimeout(() => {
+          sidebarTop.classList.remove("sidebar-animate");
+        }, 300);
 
-  leftPanel.classList.add("fade-transition","fade-out");
-  displayPanel.classList.add("fade-transition","fade-out");
+        leftPanel.classList.add("fade-transition", "fade-out");
+        displayPanel.classList.add("fade-transition", "fade-out");
 
-  setTimeout(() => {
+        setTimeout(() => {
 
-    leftPanel.innerHTML = originalLeftPanel;
-    displayPanel.innerHTML = `
+          leftPanel.innerHTML = originalLeftPanel;
+          displayPanel.innerHTML = `
       <div class="dashboard-tabs">
         <button class="tab active" data-view="overview">Overview</button>
         <button class="tab" data-view="anatomy">Anatomy</button>
@@ -1423,66 +1680,66 @@ function restoreDashboard() {
       <div id="previewContent" class="scroll-container"></div>
     `;
 
-    updateView("overview");
-    attachDashboardTabEvents();
+          updateView("overview");
+          attachDashboardTabEvents();
 
-    leftPanel.classList.remove("fade-out");
-    displayPanel.classList.remove("fade-out");
+          leftPanel.classList.remove("fade-out");
+          displayPanel.classList.remove("fade-out");
 
-  }, 200);
-}
-// Attach Wiki Events
-function attachWikiEvents() {
+        }, 200);
+      }
+      // Attach Wiki Events
+      function attachWikiEvents() {
 
-const backBtn = document.getElementById("backToDashboard");
-if (backBtn) backBtn.addEventListener("click", restoreDashboard);
+        const backBtn = document.getElementById("backToDashboard");
+        if (backBtn) backBtn.addEventListener("click", restoreDashboard);
 
-// Folder toggle
-document.querySelectorAll(".tree-row").forEach(row => {
-  row.addEventListener("click", (e) => {
-    const folder = row.parentElement;
-    if (folder.classList.contains("folder")) {
-      folder.classList.toggle("open");
-    }
-  });
-});
+        // Folder toggle
+        document.querySelectorAll(".tree-row").forEach(row => {
+          row.addEventListener("click", (e) => {
+            const folder = row.parentElement;
+            if (folder.classList.contains("folder")) {
+              folder.classList.toggle("open");
+            }
+          });
+        });
 
-// File click
-document.querySelectorAll(".file").forEach(file => {
-  file.addEventListener("click", () => {
-    document.getElementById("wikiContent").innerHTML = `
+        // File click
+        document.querySelectorAll(".file").forEach(file => {
+          file.addEventListener("click", () => {
+            document.getElementById("wikiContent").innerHTML = `
       <div style="color:var(--text-primary);font-weight:600;margin-bottom:10px;">
         ${file.textContent}
       </div>
       Data fetching soon...
     `;
-  });
-});
+          });
+        });
 
-// Tabs dummy
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
+        // Tabs dummy
+        document.querySelectorAll(".tab").forEach(tab => {
+          tab.addEventListener("click", () => {
+            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
 
-    document.getElementById("wikiContent").innerHTML = `
+            document.getElementById("wikiContent").innerHTML = `
       <div style="color:var(--text-primary);font-weight:600;margin-bottom:10px;">
         ${tab.textContent} View
       </div>
       Data fetching soon...
     `;
-  });
-});
-}
-function attachConvertEvents() {
+          });
+        });
+      }
+      function attachConvertEvents() {
 
-const backBtn = document.getElementById("backToDashboard");
-if (backBtn) backBtn.addEventListener("click", restoreDashboard);
+        const backBtn = document.getElementById("backToDashboard");
+        if (backBtn) backBtn.addEventListener("click", restoreDashboard);
 
-const moveBtn = document.getElementById("moveToConversion");
-if (moveBtn) {
-  moveBtn.addEventListener("click", () => {
-    document.getElementById("convertContent").innerHTML = `
+        const moveBtn = document.getElementById("moveToConversion");
+        if (moveBtn) {
+          moveBtn.addEventListener("click", () => {
+            document.getElementById("convertContent").innerHTML = `
       <div style="color:var(--text-primary);font-weight:600;margin-bottom:10px;">
         Conversion Pipeline
       </div>
@@ -1513,46 +1770,46 @@ if (moveBtn) {
 });
 }
 
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
+        document.querySelectorAll(".tab").forEach(tab => {
+          tab.addEventListener("click", () => {
+            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
 
-    document.getElementById("convertContent").innerHTML = `
+            document.getElementById("convertContent").innerHTML = `
       <div style="color:var(--text-primary);font-weight:600;margin-bottom:10px;">
         ${tab.textContent} View
       </div>
       Data fetching soon...
     `;
-  });
-});
-}
-renderHeader();
+          });
+        });
+      }
+      renderHeader();
 
-document.addEventListener("click", function(e) {
+      document.addEventListener("click", function (e) {
 
-const target = e.target.closest(".nav-item, .sub-nav, .convert-cta");
-if (!target) return;
+        const target = e.target.closest(".nav-item, .sub-nav, .convert-cta");
+        if (!target) return;
 
-const text = target.textContent.trim();
+        const text = target.textContent.trim();
 
-// ===== DASHBOARD =====
-if (text === "Dashboard") {
-  restoreDashboard();
-  return;
-}
+        // ===== DASHBOARD =====
+        if (text === "Dashboard") {
+          restoreDashboard();
+          return;
+        }
 
-// ===== CODE WIKI =====
-if (text === "Code Wiki") {
-  if (!isWikiMode) activateCodeWiki();
-  return;
-}
+        // ===== CODE WIKI =====
+        if (text === "Code Wiki") {
+          if (!isWikiMode) activateCodeWiki();
+          return;
+        }
 
-// ===== CONVERT MODE =====
-if (text === "Convert Code" || text === "Code Convert") {
-  if (!isConvertMode) activateConvertMode();
-  return;
-}
+        // ===== CONVERT MODE =====
+        if (text === "Convert Code" || text === "Code Convert") {
+          if (!isConvertMode) activateConvertMode();
+          return;
+        }
 
 // System Diagnostics and Settings can have their own handlers here//
 if (text === "System Diagnostics") {
@@ -1665,5 +1922,6 @@ function activateCodeWiki() {
 
 });
     </script>
-  </body>
+</body>
+
 </html>
