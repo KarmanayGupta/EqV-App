@@ -226,6 +226,8 @@
   flex: 1;
   overflow-y: auto;
   padding-right: 6px;
+  display: flex;
+  flex-direction: column;
 }
 
       /* Stats */
@@ -234,6 +236,7 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 24px;
         margin-bottom: 32px;
+        flex-shrink: 0;
       }
       .stat-card {
         background: linear-gradient(
@@ -263,9 +266,24 @@
         border-radius: var(--radius);
         padding: 24px;
         margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+      }
+      .chart-wrapper.flex-fill {
+        flex-grow: 1;
+        margin-bottom: 0;
+        min-height: 200px;
       }
       .chart-container {
+        position: relative;
         height: 260px;
+        width: 100%;
+      }
+      .chart-wrapper.flex-fill .chart-container {
+        height: auto;
+        flex-grow: 1;
+        min-height: 0;
       }
       .chart-wrapper h4 {
   color: #000;
@@ -276,11 +294,13 @@
       /* Graph */
       .graph-container {
         width: 100%;
-        height: 450px;
         background: rgb(255, 248, 232);
         border-radius: var(--radius);
         border: 1px solid var(--border);
         overflow: hidden;
+        flex-grow: 1;
+        min-height: 200px;
+        position: relative;
       }
       .graph-container svg {
   width: 100%;
@@ -893,8 +913,6 @@ function renderHeader() {
 `;
 }
 
-
-
 function setState(newState) {
   Object.assign(appState, newState);
   console.log("STATE:", appState);
@@ -942,7 +960,7 @@ function setState(newState) {
 <div class="stat-card"><div class="stat-value">48.2K</div><div class="stat-label">Lines of Code</div></div>
 <div class="stat-card"><div class="stat-value">42</div><div class="stat-label">Complexity Score</div></div>
 </div>
-<div class="chart-wrapper">
+<div class="chart-wrapper flex-fill">
 <h4>Complexity Distribution</h4>
 <div class="chart-container"><canvas id="complexityChart"></canvas></div>
 </div>`;
